@@ -2,7 +2,8 @@ import { Button, FormControlLabel, TextField } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../App';
 import { createUserWIthEmaiAndPassword, FirebaseConfig, signInWithEmailAndPassword } from './LoginManager';
 
 
@@ -27,15 +28,21 @@ const Login = () => {
         success: false,
     })
     const [newUser, setNewUser] = useState(false);
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const handleFormSubmit = (e) => {
         if(newUser && user.email && user.password){
             createUserWIthEmaiAndPassword(user.name, user.email, user.password)
-            .then(res => setUser(res))
-            console.log(user);
+            .then(res => {
+                setUser(res);
+                setLoggedInUser(res);
+            })
         }
         if(!newUser && user.name && user.password){
             signInWithEmailAndPassword(user.email, user.password)
-            .then(res => setUser(res))
+            .then(res => {
+                setUser(res);
+                setLoggedInUser(res);
+            })
         }
         e.preventDefault();
 
@@ -60,6 +67,7 @@ const Login = () => {
     return (
         <div style={{textAlign: 'center', margin: '0 auto', width: '400px', height: '400px'}}>
             <h1>Email and Password Authentication</h1>
+            <p>Email: {loggedInUser.email}</p>
             <form autoComplete="off" onSubmit={handleFormSubmit}>
                 <FormControlLabel
                     control={<GreenCheckbox onChange={()=> setNewUser(!newUser)} name="checkedG" />}

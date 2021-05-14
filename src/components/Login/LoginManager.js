@@ -18,8 +18,8 @@ export const FirebaseConfig = () => {
 export const createUserWIthEmaiAndPassword = (name, email, password)=>{
     return firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((res) => {
-        console.log(res);
-        const newUserInfo = res;
+        // console.log(res);
+        const newUserInfo = res.user;
         newUserInfo.error = '';
         newUserInfo.success = true;
         updateUserName(name);
@@ -37,13 +37,13 @@ export const createUserWIthEmaiAndPassword = (name, email, password)=>{
 export const signInWithEmailAndPassword = (email, password) =>{
     return firebase.auth().signInWithEmailAndPassword(email, password)
     .then((res) => {
-        const newUserInfo = res;
+        const newUserInfo = res.user;
         newUserInfo.error = '';
         newUserInfo.success = true;
         return newUserInfo;
     })
     .catch((error) => {
-        var errorCode = error.code;
+        // var errorCode = error.code;
         var errorMessage = error.message;
         const newUserInfo = {};
         newUserInfo.error = errorMessage;
