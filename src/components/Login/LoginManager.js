@@ -18,7 +18,7 @@ export const FirebaseConfig = () => {
 export const createUserWIthEmaiAndPassword = (name, email, password)=>{
     return firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((res) => {
-        // console.log(res);
+        console.log(res);
         const newUserInfo = res.user;
         newUserInfo.error = '';
         newUserInfo.success = true;
@@ -35,6 +35,7 @@ export const createUserWIthEmaiAndPassword = (name, email, password)=>{
 }
 
 export const signInWithEmailAndPassword = (email, password) =>{
+    console.log(email, password);
     return firebase.auth().signInWithEmailAndPassword(email, password)
     .then((res) => {
         const newUserInfo = res.user;

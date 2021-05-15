@@ -3,6 +3,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 import React, { useContext, useState } from 'react';
+import { useHistory, useLocation } from 'react-router';
 import { UserContext } from '../../App';
 import { createUserWIthEmaiAndPassword, FirebaseConfig, signInWithEmailAndPassword } from './LoginManager';
 
@@ -29,19 +30,26 @@ const Login = () => {
     })
     const [newUser, setNewUser] = useState(false);
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+
+    let history = useHistory();
+    let location = useLocation();
+    let { from } = location.state || { from: { pathname: "/" } };
     const handleFormSubmit = (e) => {
         if(newUser && user.email && user.password){
             createUserWIthEmaiAndPassword(user.name, user.email, user.password)
             .then(res => {
                 setUser(res);
                 setLoggedInUser(res);
+                // console.log(loggedInUser);
+                history.replace(from);
             })
         }
-        if(!newUser && user.name && user.password){
+        if(!newUser && user.email && user.password){
             signInWithEmailAndPassword(user.email, user.password)
             .then(res => {
                 setUser(res);
                 setLoggedInUser(res);
+                history.replace(from)
             })
         }
         e.preventDefault();
@@ -64,10 +72,10 @@ const Login = () => {
             setUser(newUserInfo);
         }
     }
+
     return (
         <div style={{textAlign: 'center', margin: '0 auto', width: '400px', height: '400px'}}>
             <h1>Email and Password Authentication</h1>
-            <p>Email: {loggedInUser.email}</p>
             <form autoComplete="off" onSubmit={handleFormSubmit}>
                 <FormControlLabel
                     control={<GreenCheckbox onChange={()=> setNewUser(!newUser)} name="checkedG" />}

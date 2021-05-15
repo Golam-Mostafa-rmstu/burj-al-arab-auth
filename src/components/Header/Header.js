@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Header.css';
+import { UserContext } from '../../App';
 import header from '../../images/header.png';
 import logo from '../../images/icons/logo.png';
-
+import './Header.css';
 const Header = () => {
+    const [loggedInUser, setLoggedInUser] = useState(UserContext);
     return (
         <div style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${header})` }} className="header">
             <nav className="nav">
@@ -20,6 +21,9 @@ const Header = () => {
                     </li>
                     <li>
                         <Link className="btn-book" to="/book">Book</Link>
+                    </li>
+                    <li>
+                        <Link to="/login"><button style={{cursor:'pointer'}} onClick={()=> setLoggedInUser({})}>Sign Out</button></Link>
                     </li>
                 </ul>
             </nav>
